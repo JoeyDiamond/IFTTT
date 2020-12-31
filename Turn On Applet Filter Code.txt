@@ -1,0 +1,28 @@
+let rawData = Feed.newFeedItem.EntryContent;
+let aqi = -10;
+let searchTerm = "AQI";
+let aqiThreshhold = 50;
+
+let indexOfFirst = rawData.indexOf(searchTerm);
+let indexofLast = rawData.lastIndexOf(searchTerm);
+
+if(indexofLast > -1) {
+  let aqiStr = rawData.substr(indexofLast - 5, 5).trim();
+  while(aqiStr.charAt(0) == '-') {
+    aqiStr = aqiStr.substring(1);
+  }
+  aqi = parseInt(aqiStr)
+}
+
+if(indexOfFirst > -1) {
+  let aqiStr = rawData.substr(indexOfFirst - 5, 5).trim();
+  while(aqiStr.charAt(0) == '-') {
+    aqiStr = aqiStr.substring(1);
+  }
+  if(parseInt(aqiStr) > aqi)
+    aqi = parseInt(aqiStr);
+}
+
+if(aqi < 50) {
+  WemoInsightSwitch.attributeInsightOnDiscrete.skip();
+}
